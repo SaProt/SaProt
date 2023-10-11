@@ -78,6 +78,10 @@ print(f"combined_seq: {combined_seq}")
 ```
 
 ## Prepare dataset
+### Pre-training dataset
+We are preparing the pre-training dataset and will release it soon.
+
+### Downstream tasks
 We provide datasets that are used in the paper. Datasets can be downloaded from 
 [here](https://drive.google.com/drive/folders/11dNGqPYfLE3M-Mbh4U7IQpuHxJpuRr4g?usp=sharing).
 
@@ -86,7 +90,9 @@ Once downloaded, the datasets need to be decompressed and placed in the `LMDB` f
 ## Fine-tune SaProt
 We provide a script to fine-tune SaProt on the datasets. The following code shows how to fine-tune SaProt on specific
 downstream tasks. Before running the code, please make sure that the datasets are placed in the `LMDB` folder and the
-huggingface version of SaProt model is placed in the `weights/PLMs` folder.
+huggingface version of SaProt model is placed in the `weights/PLMs` folder. **Note that the default training setting is not as 
+same as in the paper because of the hardware limitation for different users. We recommend users to modify the yaml file 
+flexibly based on their own conditions (i.e. batch_size, devices and accumulate_grad_batches).**
 ```
 # Fine-tune SaProt on the Thermostability task
 python scripts/training.py -c config/Thermostability/saprot.yaml
@@ -96,17 +102,23 @@ python scripts/training.py -c config/Thermostability/esm2.yaml
 ```
 ### Record the training process (optional)
 If you want to record the training process using wandb, you could modify the config file and set `Trainer.logger = True`
-and then paste your wandb API key in the config key `setting.os_environ.WANDB_API_KEY`. Other settings can be modified
-flexibly for your own needs.
+and then paste your wandb API key in the config key `setting.os_environ.WANDB_API_KEY`.
 
 ## Evaluate zero-shot performance
 We provide a script to evaluate the zero-shot performance of models (foldseek binary file is required to be placed in
 the `bin` folder):
 ```
-# Fine-tune SaProt on the ProteinGym benchmark
+# Evaluate the zero-shot performance of SaProt on the ProteinGym benchmark
 python scripts/mutation_zeroshot.py -c config/ProteinGym/saprot.yaml
 
-# Fine-tune ESM-2 on the ProteinGym benchmark
+# Evaluate the zero-shot performance of ESM-2 on the ProteinGym benchmark
 python scripts/mutation_zeroshot.py -c config/ProteinGym/esm2.yaml
 ```
 The results will be saved in the `output/ProteinGym` folder.
+
+For **ClinVar** benchmark, you can use the following script to calculate the AUC metric:
+```
+# Evaluate the zero-shot performance of SaProt on the ClinVar benchmark
+python scripts/mutation_zeroshot.py -c config/ClinVar/saprot.yaml
+python scripts/compute_clinvar_auc.py -c config/ClinVar/saprot.yaml
+```
