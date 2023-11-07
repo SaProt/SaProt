@@ -12,8 +12,8 @@ conda activate SaProt
 ### Install packages
 ```
 bash environment.sh  
-``` 
- 
+```
+
 ## Prepare the SaProt model
 We provide two ways to use SaProt, including through huggingface class and 
 through the same way as in [esm github](https://github.com/facebookresearch/esm). Users can choose either one to use. 
@@ -24,30 +24,36 @@ Some experimental results are listed below. For more details, please refer to ou
 
 #### 35M Model
 
-|    **Model**     | **ProteinGym** | **ClinVar** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
-| :--------------: | :------------: | :---------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
-|                  |  Spearman's ρ  |     AUC     |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
-|   ESM-2 (35M)    |     0.339      |    0.722    |        0.669        |    80.79     |         73.08         |   0.841   |   0.629   |   0.298   |   0.349   |          76.58          |       91.60        |
-| SaProt-Seq (35M) |     0.337      |    0.738    |        0.672        |    80.56     |         73.23         |   0.823   |   0.624   |   0.293   |   0.335   |          76.67          |       91.16        |
-|   SaProt (35M)   |   **0.392**    |  **0.794**  |      **0.692**      |  **81.11**   |       **74.29**       | **0.844** | **0.648** | **0.314** | **0.365** |        **78.09**        |     **91.97**      |
+**Additional Results After Paper Submission**
+
+**SaProt-Seq (35M)** shares everything the same with **SaProt (35M)**, but it was pre-trained using only residue sequences. That is, during pre-training, the structure tokens were masked as **#**. An explicit comparison between **SaProt (35M)** and **SaProt-Seq  (35M)** clearly shows that the inclusion of structure tokens leads to a notable improvement. Furthermore, **SaProt-Seq (35M)** exhibits similar results to the official **ESM-2 (35M)**, which is also expected as they are essentially the same model (one was trained by us and one was trained by Meta).
+
+|    **Model**     | **ClinVar** | **ProteinGym** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
+| :--------------: | :---------: | :------------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
+|                  |     AUC     |  Spearman's ρ  |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
+|   ESM-2 (35M)    |    0.722    |     0.339      |        0.669        |    80.79     |         73.08         |   0.841   |   0.629   |   0.298   |   0.349   |          76.58          |       91.60        |
+| SaProt-Seq (35M) |    0.738    |     0.337      |        0.672        |    80.56     |         73.23         |   0.823   |   0.624   |   0.293   |   0.335   |          76.67          |       91.16        |
+|   SaProt (35M)   |  **0.794**  |   **0.392**    |      **0.692**      |  **81.11**   |       **74.29**       | **0.844** | **0.648** | **0.314** | **0.365** |        **78.09**        |     **91.97**      |
 
 #### 650M  Model
 
-|   **Model**   | **ProteinGym** | **ClinVar** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
-| :-----------: | :------------: | :---------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
-|               |  Spearman's ρ  |     AUC     |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
-| ESM-2 (650M)  |     0.475      |    0.862    |        0.680        |    76.67     |         71.56         |   0.877   |   0.668   |   0.345   |   0.411   |          82.09          |       91.96        |
-| SaProt (650M) |   **0.478**    |  **0.909**  |      **0.724**      |  **86.41**   |       **75.75**       | **0.884** | **0.678** | **0.356** | **0.414** |        **85.57**        |     **93.55**      |
+|   **Model**   | **ClinVar** | **ProteinGym** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
+| :-----------: | :---------: | :------------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
+|               |     AUC     |  Spearman's ρ  |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
+| ESM-2 (650M)  |    0.862    |     0.475      |        0.680        |    76.67     |         71.56         |   0.877   |   0.668   |   0.345   |   0.411   |          82.09          |       91.96        |
+| SaProt (650M) |  **0.909**  |   **0.478**    |      **0.724**      |  **86.41**   |       **75.75**       | **0.884** | **0.678** | **0.356** | **0.414** |        **85.57**        |     **93.55**      |
 
 #### AlphaFold2 vs. ESMFold
 
+##### Additional Results After Paper Submission（suggested by other researchers）
+
 We compare structures predicted by AF2 or ESMFold, which is shown below:
 
-|    **model**     | **ProteinGym** | **ClinVar** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
-| :--------------: | :------------: | :---------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
-|                  |  Spearman's ρ  |     AUC     |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
-| SaProt (ESMFold) |     0.455      |    0.896    |        0.717        |    85.78     |         74.10         |   0.870   |   0.675   |   0.340   |   0.407   |          82.82          |       93.19        |
-|   SaProt (AF2)   |   **0.478**    |  **0.909**  |      **0.724**      |  **86.41**   |       **75.75**       | **0.884** | **0.678** | **0.356** | **0.414** |        **85.57**        |     **93.55**      |
+|    **model**     | **ClinVar** | **ProteinGym** | **Thermostability** | **HumanPPI** | **Metal Ion Binding** |  **EC**   | **GO-MF** | **GO-BP** | **GO-CC** | DeepLoc-**Subcellular** | **DeepLoc-Binary** |
+| :--------------: | :---------: | :------------: | :-----------------: | :----------: | :-------------------: | :-------: | :-------: | :-------: | :-------: | :---------------------: | :----------------: |
+|                  |     AUC     |  Spearman's ρ  |    Spearman's ρ     |     Acc%     |         Acc%          |   Fmax    |   Fmax    |   Fmax    |   Fmax    |          Acc%           |        Acc%        |
+| SaProt (ESMFold) |    0.896    |     0.455      |        0.717        |    85.78     |         74.10         |   0.870   |   0.675   |   0.340   |   0.407   |          82.82          |       93.19        |
+|   SaProt (AF2)   |  **0.909**  |   **0.478**    |      **0.724**      |  **86.41**   |       **75.75**       | **0.884** | **0.678** | **0.356** | **0.414** |        **85.57**        |     **93.55**      |
 
 
 ### Huggingface model
