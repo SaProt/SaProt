@@ -1,4 +1,4 @@
-# SaProt
+# SaProt (Please visit our latest repository https://github.com/westlake-repl/SaProt)
 Official implementation of SaProt.
 
 ![](figures/pipeline.png) 
